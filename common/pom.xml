@@ -62,7 +62,11 @@
 			<version>4.0.1.RELEASE</version>
 			<scope>compile</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
