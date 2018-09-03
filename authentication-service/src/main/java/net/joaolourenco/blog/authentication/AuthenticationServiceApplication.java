@@ -1,4 +1,4 @@
-package net.joaolourenco.blog.gatewayservice;
+package net.joaolourenco.blog.authentication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class GatewayServiceApplication {
+public class AuthenticationServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GatewayServiceApplication.class, args);
+		SpringApplication.run(AuthenticationServiceApplication.class, args);
 	}
-
 }
