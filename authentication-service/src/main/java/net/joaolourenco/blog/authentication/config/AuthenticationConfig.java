@@ -1,62 +1,66 @@
 package net.joaolourenco.blog.authentication.config;
 
-import net.joaolourenco.blog.authentication.security.JwtAuthenticationEntryPoint;
-import net.joaolourenco.blog.authentication.security.JwtAuthenticationProvider;
-import net.joaolourenco.blog.authentication.security.JwtAuthenticationTokenFilter;
-import net.joaolourenco.blog.authentication.security.JwtSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
-import java.util.Collections;
-
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableWebSecurity
+@EnableAuthorizationServer
 @Configuration
 public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationProvider authenticationProvider;
+    @Value("${security.jwt.client-id}")
+    private String clientId;
+
+    @Value("${security.jwt.client-secret}")
+    private String clientSecret;
+
+    @Value("${security.jwt.grant-type}")
+    private String grantType;
+
+    @Value("${security.jwt.scope-read}")
+    private String scopeRead;
+
+    @Value("${security.jwt.scope-write}")
+    private String scopeWrite = "write";
+
+    @Value("${security.jwt.resource-ids}")
+    private String resourceIds;
 
     @Autowired
-    private JwtAuthenticationEntryPoint entryPoint;
+    private TokenStore tokenStore;
 
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(Collections.singletonList(authenticationProvider));
-    }
+    @Autowired
+    private JwtAccessTokenConverter accessTokenConverter;
 
-    @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilter() {
-        JwtAuthenticationTokenFilter filter = new JwtAuthenticationTokenFilter();
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(new JwtSuccessHandler());
-
-        return filter;
+    /*
+    @Override
+    public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
+        configurer
+                .inMemory()
+                .withClient(clientId)
+                .secret(clientSecret)
+                .authorizedGrantTypes(grantType)
+                .scopes(scopeRead, scopeWrite)
+                .resourceIds(resourceIds);
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable()
-                // .authorizeRequests().antMatchers("**").authenticated().and()
-                .exceptionHandling().authenticationEntryPoint(entryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        http.headers().cacheControl();
-
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        enhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter));
+        endpoints.tokenStore(tokenStore)
+                .accessTokenConverter(accessTokenConverter)
+                .tokenEnhancer(enhancerChain)
+                .authenticationManager(authenticationManager);
     }
+    */
 
 }
