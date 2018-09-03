@@ -1,4 +1,4 @@
-package net.joaolourenco.blog.utils;
+package net.joaolourenco.common;
 
 public enum AvailableServices {
 

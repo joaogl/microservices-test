@@ -1,4 +1,4 @@
-package net.joaolourenco.blog.utils;
+package net.joaolourenco.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
