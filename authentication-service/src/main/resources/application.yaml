@@ -16,7 +16,7 @@ spring:
         healthCheckPath: /health-check
         healthCheckInterval: 30s
   datasource:
-    url: jdbc:mariadb://localhost:3306/Authentication
+    url: jdbc:mariadb://localhost:3306/
     username: root
     password: root
     driver-class-name: org.mariadb.jdbc.Driver

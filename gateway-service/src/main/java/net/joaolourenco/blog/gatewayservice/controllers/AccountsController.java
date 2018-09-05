@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("accounts")
 public class AccountsController extends BaseController {
 
     @GetMapping
-    public ResponseEntity<String> check() {
+    public ResponseEntity<String> check(HttpServletRequest request) {
         return ResponseEntity.ok(restTemplate.getForObject(getServiceURL(AvailableServices.AccountsService, "accounts"), String.class));
     }
 
