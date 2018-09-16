@@ -2,6 +2,7 @@ package net.joaolourenco.common;
 
 public enum AvailableServices {
 
+    AuthenticationService("authentication-service"),
     AccountsService("accounts-service");
 
     private final String serviceName;

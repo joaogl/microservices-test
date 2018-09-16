@@ -1,12 +1,12 @@
 package net.joaolourenco.blog.authentication.services.api;
 
-import net.joaolourenco.common.authentication.models.UserCached;
+import net.joaolourenco.common.domain.authentication.UserCachedDTO;
 
-public interface Authentication {
+public interface IAuthenticationService {
 
     Long register(String username, String password);
 
-    UserCached login(String username, String password);
+    UserCachedDTO login(String username, String password);
 
     void logout(Long userId);
 

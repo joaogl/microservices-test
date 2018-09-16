@@ -3,7 +3,7 @@ package net.joaolourenco.common.cache.impl;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import net.joaolourenco.common.authentication.models.UserCached;
+import net.joaolourenco.common.domain.authentication.UserCachedDTO;
 import net.joaolourenco.common.cache.api.AuthCache;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,7 +22,7 @@ public class AuthCacheService implements AuthCache {
     }
 
     @Override
-    public UserCached getAuthenticatedUser(String token) {
+    public UserCachedDTO getAuthenticatedUser(String token) {
         return getSessionsMap().get(token);
     }
 
@@ -32,12 +32,12 @@ public class AuthCacheService implements AuthCache {
     }
 
     @Override
-    public void storeAuthenticatedUser(String key, UserCached userToCache) {
-        ((IMap<String, UserCached>) getSessionsMap()).set(key, userToCache);
+    public void storeAuthenticatedUser(Object key, UserCachedDTO userToCache) {
+        ((IMap<String, UserCachedDTO>) getSessionsMap()).set(key.toString(), userToCache);
     }
 
     @Override
-    public void invalidateUserAuthentication(String key) {
+    public void invalidateUserAuthentication(Object key) {
         getSessionsMap().remove(key);
     }
 
@@ -46,7 +46,7 @@ public class AuthCacheService implements AuthCache {
     public void invalidateAllAuthentications() { }
 
     @Override
-    public Map<String, UserCached> getSessionsMap() {
+    public Map<String, UserCachedDTO> getSessionsMap() {
         return instance.getMap("sessions");
     }
 

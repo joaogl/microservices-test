@@ -1,8 +1,8 @@
 package net.joaolourenco.blog.authentication.controllers;
 
 import net.joaolourenco.blog.authentication.services.impl.AuthenticationService;
-import net.joaolourenco.common.authentication.models.User;
-import net.joaolourenco.common.authentication.models.UserCached;
+import net.joaolourenco.blog.authentication.domain.UserAuthentication;
+import net.joaolourenco.common.domain.authentication.UserCachedDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    ResponseEntity<Long> register(@RequestBody final User user) {
+    ResponseEntity<Long> register(@RequestBody final UserAuthentication user) {
         LOGGER.info("Creating a new registration for user: " + user.getUsername());
 
         Long newUserId = authenticationService.register(user.getUsername(), user.getPassword());
@@ -28,7 +28,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    ResponseEntity<UserCached> login(@RequestBody() final User user) {
+    ResponseEntity<UserCachedDTO> login(@RequestBody() final UserAuthentication user) {
         LOGGER.info("Attempting to login user: " + user.getUsername());
 
         return ResponseEntity.ok(authenticationService.login(user.getUsername(), user.getPassword()));
