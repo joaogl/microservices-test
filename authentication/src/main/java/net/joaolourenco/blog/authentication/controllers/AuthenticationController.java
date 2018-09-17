@@ -24,18 +24,18 @@ public class AuthenticationController {
     ResponseEntity<Long> register(@RequestBody final UserCredentialsDTO user) {
         LOGGER.info("Creating a new registration for user: " + user.getUsername());
 
-        return ResponseEntity.ok(authenticationService.createCredentials(user.getUsername(), user.getPassword()));
+        Long userId = authenticationService.createCredentials(user.getUsername(), user.getPassword());
+
+        return ResponseEntity.ok(userId);
     }
 
     @PostMapping("/login")
-    ResponseEntity<Boolean> login(@RequestBody() final UserCredentialsDTO user) throws Exception {
+    ResponseEntity<Boolean> login(@RequestBody() final UserCredentialsDTO user) {
         LOGGER.info("Attempting to login user: " + user.getUsername());
 
-        try {
-            return ResponseEntity.ok(authenticationService.checkCredentials(user.getUsername(), user.getPassword()));
-        } catch (Exception e) {
-            throw new Exception("Hi!");
-        }
+        Boolean loginResult = authenticationService.checkCredentials(user.getUsername(), user.getPassword());
+
+        return ResponseEntity.ok(loginResult);
     }
 
 }
